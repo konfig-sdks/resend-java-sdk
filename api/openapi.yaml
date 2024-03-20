@@ -1,0 +1,2222 @@
+openapi: 3.0.3
+info:
+  description: Resend is the email platform for developers.
+  title: Resend
+  version: 1.1.0
+  x-konfig-has-globally-required-security: true
+servers:
+- url: https://api.resend.com
+security:
+- bearerAuth: []
+tags:
+- description: Create and manage domains through the Resend API.
+  name: Domains
+- description: Create and manage Contacts through the Resend API.
+  name: Contacts
+- description: Create and manage Audiences through the Resend API.
+  name: Audiences
+- description: Start sending emails through the Resend API.
+  name: Emails
+- description: Create and manage API Keys through the Resend API.
+  name: API Keys
+paths:
+  /emails:
+    post:
+      operationId: Emails_sendEmail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEmailResponse'
+          description: OK
+      summary: Send an email
+      tags:
+      - Emails
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--emails
+      x-content-type: application/json
+      x-accepts: application/json
+  /emails/{email_id}:
+    get:
+      operationId: Emails_getSingleEmail
+      parameters:
+      - explode: false
+        in: path
+        name: email_id
+        required: true
+        schema:
+          description: The ID of the email.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Email'
+          description: OK
+      summary: Retrieve a single email
+      tags:
+      - Emails
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--emails-email_id
+      x-accepts: application/json
+  /emails/batch:
+    post:
+      operationId: Emails_triggerBatchEmails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailsTriggerBatchEmailsRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBatchEmailsResponse'
+          description: OK
+      summary: Trigger up to 100 batch emails at once.
+      tags:
+      - Emails
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--emails-batch
+      x-content-type: application/json
+      x-accepts: application/json
+  /domains:
+    get:
+      operationId: Domains_getList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDomainsResponse'
+          description: OK
+      summary: Retrieve a list of domains
+      tags:
+      - Domains
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--domains
+      x-accepts: application/json
+    post:
+      operationId: Domains_createNewDomain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDomainRequest'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDomainResponse'
+          description: OK
+      summary: Create a new domain
+      tags:
+      - Domains
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--domains
+      x-content-type: application/json
+      x-accepts: application/json
+  /domains/{domain_id}:
+    delete:
+      operationId: Domains_removeDomain
+      parameters:
+      - explode: false
+        in: path
+        name: domain_id
+        required: true
+        schema:
+          description: The ID of the domain.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteDomainResponse'
+          description: OK
+      summary: Remove an existing domain
+      tags:
+      - Domains
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--domains-domain_id
+      x-accepts: application/json
+    get:
+      operationId: Domains_getSingleDomain
+      parameters:
+      - explode: false
+        in: path
+        name: domain_id
+        required: true
+        schema:
+          description: The ID of the domain.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domain'
+          description: OK
+      summary: Retrieve a single domain
+      tags:
+      - Domains
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--domains-domain_id
+      x-accepts: application/json
+    patch:
+      operationId: Domains_updateExistingDomain
+      parameters:
+      - explode: false
+        in: path
+        name: domain_id
+        required: true
+        schema:
+          description: The ID of the domain.
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDomainOptions'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateDomainResponseSuccess'
+          description: OK
+      summary: Update an existing domain
+      tags:
+      - Domains
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-patch--domains-domain_id
+      x-content-type: application/json
+      x-accepts: application/json
+  /domains/{domain_id}/verify:
+    post:
+      operationId: Domains_verifyDomain
+      parameters:
+      - explode: false
+        in: path
+        name: domain_id
+        required: true
+        schema:
+          description: The ID of the domain.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyDomainResponse'
+          description: OK
+      summary: Verify an existing domain
+      tags:
+      - Domains
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--domains-domain_id-verify
+      x-accepts: application/json
+  /api-keys:
+    get:
+      operationId: ApiKeys_getList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListApiKeysResponse'
+          description: OK
+      summary: Retrieve a list of API keys
+      tags:
+      - API Keys
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--api-keys
+      x-accepts: application/json
+    post:
+      operationId: ApiKeys_createNewKey
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApiKeyRequest'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateApiKeyResponse'
+          description: OK
+      summary: Create a new API key
+      tags:
+      - API Keys
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--api-keys
+      x-content-type: application/json
+      x-accepts: application/json
+  /api-keys/{api_key_id}:
+    delete:
+      operationId: ApiKeys_removeExistingKey
+      parameters:
+      - explode: false
+        in: path
+        name: api_key_id
+        required: true
+        schema:
+          description: The API key ID.
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      summary: Remove an existing API key
+      tags:
+      - API Keys
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--api-keys-api_key_id
+      x-accepts: application/json
+  /audiences:
+    get:
+      operationId: Audiences_getList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAudiencesResponseSuccess'
+          description: OK
+      summary: Retrieve a list of audiences
+      tags:
+      - Audiences
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--audiences
+      x-accepts: application/json
+    post:
+      operationId: Audiences_createContactList
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAudienceOptions'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAudienceResponseSuccess'
+          description: OK
+      summary: Create a list of contacts
+      tags:
+      - Audiences
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--audiences
+      x-content-type: application/json
+      x-accepts: application/json
+  /audiences/{id}:
+    delete:
+      operationId: Audiences_removeExistingAudience
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The Audience ID.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoveAudienceResponseSuccess'
+          description: OK
+      summary: Remove an existing audience
+      tags:
+      - Audiences
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--audiences-id
+      x-accepts: application/json
+    get:
+      operationId: Audiences_getSingleAudience
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The Audience ID.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAudienceResponseSuccess'
+          description: OK
+      summary: Retrieve a single audience
+      tags:
+      - Audiences
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--audiences-id
+      x-accepts: application/json
+  /audiences/{audience_id}/contacts:
+    get:
+      operationId: Contacts_getList
+      parameters:
+      - explode: false
+        in: path
+        name: audience_id
+        required: true
+        schema:
+          description: The Audience ID.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListContactsResponseSuccess'
+          description: OK
+      summary: Retrieve a list of contacts
+      tags:
+      - Contacts
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--audiences-audience_id-contacts
+      x-accepts: application/json
+    post:
+      operationId: Contacts_createNewContact
+      parameters:
+      - explode: false
+        in: path
+        name: audience_id
+        required: true
+        schema:
+          description: The Audience ID.
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContactOptions'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateContactResponseSuccess'
+          description: OK
+      summary: Create a new contact
+      tags:
+      - Contacts
+      x-konfig-operation-can-have-single-parameter: false
+      x-content-type: application/json
+      x-accepts: application/json
+  /audiences/{audience_id}/contacts/{email}:
+    delete:
+      operationId: Contacts_removeByEmail
+      parameters:
+      - explode: false
+        in: path
+        name: email
+        required: true
+        schema:
+          description: The Contact ID.
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: audience_id
+        required: true
+        schema:
+          description: The Audience ID.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoveContactResponseSuccess'
+          description: OK
+      summary: Remove an existing contact by email
+      tags:
+      - Contacts
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--audiences-audience_id-contacts-email
+      x-accepts: application/json
+  /audiences/{audience_id}/contacts/{id}:
+    delete:
+      operationId: Contacts_removeById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The Contact ID.
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: audience_id
+        required: true
+        schema:
+          description: The Audience ID.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoveContactResponseSuccess'
+          description: OK
+      summary: Remove an existing contact by id
+      tags:
+      - Contacts
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--audiences-audience_id-contacts-id
+      x-accepts: application/json
+    get:
+      operationId: Contacts_getSingle
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The Contact ID.
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: audience_id
+        required: true
+        schema:
+          description: The Audience ID.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContactResponseSuccess'
+          description: OK
+      summary: Retrieve a single contact
+      tags:
+      - Contacts
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--audiences-audience_id-contacts-id
+      x-accepts: application/json
+    patch:
+      operationId: Contacts_updateSingleContact
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          description: The Contact ID.
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: audience_id
+        required: true
+        schema:
+          description: The Audience ID.
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContactOptions'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateContactResponseSuccess'
+          description: OK
+      summary: Update a single contact
+      tags:
+      - Contacts
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-patch--audiences-audience_id-contacts-id
+      x-content-type: application/json
+      x-accepts: application/json
+components:
+  schemas:
+    SendEmailRequest:
+      example:
+        cc: cc
+        headers: "{}"
+        bcc: bcc
+        attachments:
+        - path: path
+          filename: filename
+          content: ""
+        - path: path
+          filename: filename
+          content: ""
+        reply_to: reply_to
+        subject: subject
+        from: from
+        html: html
+        to:
+        - to
+        - to
+        text: text
+        tags:
+        - name: name
+          value: value
+        - name: name
+          value: value
+      properties:
+        tags:
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        from:
+          description: "Sender email address. To include a friendly name, use the\
+            \ format \"Your Name <sender@domain.com>\"."
+          type: string
+        to:
+          items:
+            description: "Recipient email address. For multiple addresses, send as\
+              \ an array of strings. Max 50."
+            type: string
+          type: array
+        subject:
+          description: Email subject.
+          type: string
+        bcc:
+          description: "Bcc recipient email address. For multiple addresses, send\
+            \ as an array of strings."
+          type: string
+        cc:
+          description: "Cc recipient email address. For multiple addresses, send as\
+            \ an array of strings."
+          type: string
+        reply_to:
+          description: "Reply-to email address. For multiple addresses, send as an\
+            \ array of strings."
+          type: string
+        html:
+          description: The HTML version of the message.
+          type: string
+        text:
+          description: The plain text version of the message.
+          type: string
+        headers:
+          description: Custom headers to add to the email.
+          type: object
+        attachments:
+          items:
+            $ref: '#/components/schemas/Attachment'
+          type: array
+      required:
+      - from
+      - subject
+      - to
+      type: object
+    Attachment:
+      example:
+        path: path
+        filename: filename
+        content: ""
+      properties:
+        content:
+          description: Content of an attached file.
+          format: binary
+          type: string
+        filename:
+          description: Name of attached file.
+          type: string
+        path:
+          description: Path where the attachment file is hosted
+          type: string
+      type: object
+    Tag:
+      example:
+        name: name
+        value: value
+      properties:
+        name:
+          description: "The name of the email tag. It can only contain ASCII letters\
+            \ (a–z, A–Z), numbers (0–9), underscores (_), or dashes (-). It can contain\
+            \ no more than 256 characters."
+          type: string
+        value:
+          description: "The value of the email tag.It can only contain ASCII letters\
+            \ (a–z, A–Z), numbers (0–9), underscores (_), or dashes (-). It can contain\
+            \ no more than 256 characters."
+          type: string
+      type: object
+    SendEmailResponse:
+      example:
+        id: id
+      properties:
+        id:
+          description: The ID of the sent email.
+          type: string
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    Email:
+      example:
+        cc:
+        - cc
+        - cc
+        bcc:
+        - bcc
+        - bcc
+        reply_to:
+        - reply_to
+        - reply_to
+        subject: Hello World
+        last_event: delivered
+        created_at: 2023-04-03T22:13:42.674981Z
+        from: Acme <onboarding@resend.dev>
+        html: Congrats on sending your <strong>first email</strong>!
+        id: 4ef9a417-02e9-4d39-ad75-9611e0fcc33c
+        to:
+        - delivered@resend.dev
+        text: text
+        object: email
+      properties:
+        object:
+          description: The type of object.
+          example: email
+          type: string
+          x-konfig-original-example: email
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Email-properties-object
+        id:
+          description: The ID of the email.
+          example: 4ef9a417-02e9-4d39-ad75-9611e0fcc33c
+          type: string
+          x-konfig-original-example: 4ef9a417-02e9-4d39-ad75-9611e0fcc33c
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Email-properties-id
+        to:
+          example:
+          - delivered@resend.dev
+          items:
+            description: The email addresses of the recipients.
+            type: string
+          type: array
+          x-konfig-original-example:
+          - delivered@resend.dev
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Email-properties-to
+        from:
+          description: The email address of the sender.
+          example: Acme <onboarding@resend.dev>
+          type: string
+          x-konfig-original-example: Acme <onboarding@resend.dev>
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Email-properties-from
+        created_at:
+          description: The date and time the email was created.
+          example: 2023-04-03T22:13:42.674981Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2023-04-03T22:13:42.674981+00:00
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Email-properties-created_at
+        subject:
+          description: The subject line of the email.
+          example: Hello World
+          type: string
+          x-konfig-original-example: Hello World
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Email-properties-subject
+        html:
+          description: The HTML body of the email.
+          example: Congrats on sending your <strong>first email</strong>!
+          type: string
+          x-konfig-original-example: Congrats on sending your <strong>first email</strong>!
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Email-properties-html
+        text:
+          description: The plain text body of the email.
+          type: string
+        bcc:
+          description: The email addresses of the blind carbon copy recipients.
+          items:
+            type: string
+          type: array
+        cc:
+          description: The email addresses of the carbon copy recipients.
+          items:
+            type: string
+          type: array
+        reply_to:
+          description: The email addresses to which replies should be sent.
+          items:
+            type: string
+          type: array
+        last_event:
+          description: The status of the email.
+          example: delivered
+          type: string
+          x-konfig-original-example: delivered
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Email-properties-last_event
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    CreateBatchEmailsResponse:
+      example:
+        data:
+        - id: id
+        - id: id
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CreateBatchEmailsResponse_data_inner'
+          type: array
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    CreateDomainRequest:
+      example:
+        name: name
+        region: us-east-1
+      properties:
+        name:
+          description: The name of the domain you want to create.
+          type: string
+        region:
+          default: us-east-1
+          description: The region where emails will be sent from. Possible values
+            are us-east-1' | 'eu-west-1' | 'sa-east-1
+          enum:
+          - us-east-1
+          - eu-west-1
+          - sa-east-1
+          example: us-east-1
+          type: string
+          x-konfig-original-example: us-east-1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateDomainRequest-properties-region
+      required:
+      - name
+      type: object
+    CreateDomainResponse:
+      example:
+        records:
+        - record: record
+          name: name
+          type: type
+          priority: 0
+          ttl: ttl
+          value: value
+          status: status
+        - record: record
+          name: name
+          type: type
+          priority: 0
+          ttl: ttl
+          value: value
+          status: status
+        name: name
+        created_at: 2000-01-23T04:56:07.000+00:00
+        id: id
+        region: region
+        status: status
+      properties:
+        id:
+          description: The ID of the domain.
+          type: string
+        name:
+          description: The name of the domain.
+          type: string
+        created_at:
+          description: The date and time the domain was created.
+          format: date-time
+          type: string
+        status:
+          description: The status of the domain.
+          type: string
+        records:
+          items:
+            $ref: '#/components/schemas/DomainRecord'
+          type: array
+        region:
+          description: The region where the domain is hosted.
+          type: string
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    DomainRecord:
+      example:
+        record: record
+        name: name
+        type: type
+        priority: 0
+        ttl: ttl
+        value: value
+        status: status
+      properties:
+        record:
+          description: The type of record.
+          type: string
+        name:
+          description: The name of the record.
+          type: string
+        type:
+          description: The type of record.
+          type: string
+        ttl:
+          description: The time to live for the record.
+          type: string
+        status:
+          description: The status of the record.
+          type: string
+        value:
+          description: The value of the record.
+          type: string
+        priority:
+          description: The priority of the record.
+          type: integer
+      type: object
+    Domain:
+      example:
+        records:
+        - record: record
+          name: name
+          type: type
+          priority: 0
+          ttl: ttl
+          value: value
+          status: status
+        - record: record
+          name: name
+          type: type
+          priority: 0
+          ttl: ttl
+          value: value
+          status: status
+        name: example.com
+        created_at: 2023-04-26T20:21:26.347412Z
+        id: d91cd9bd-1176-453e-8fc1-35364d380206
+        region: us-east-1
+        object: domain
+        status: not_started
+      properties:
+        object:
+          description: The type of object.
+          example: domain
+          type: string
+          x-konfig-original-example: domain
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Domain-properties-object
+        id:
+          description: The ID of the domain.
+          example: d91cd9bd-1176-453e-8fc1-35364d380206
+          type: string
+          x-konfig-original-example: d91cd9bd-1176-453e-8fc1-35364d380206
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Domain-properties-id
+        name:
+          description: The name of the domain.
+          example: example.com
+          type: string
+          x-konfig-original-example: example.com
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Domain-properties-name
+        status:
+          description: The status of the domain.
+          example: not_started
+          type: string
+          x-konfig-original-example: not_started
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Domain-properties-status
+        created_at:
+          description: The date and time the domain was created.
+          example: 2023-04-26T20:21:26.347412Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2023-04-26T20:21:26.347412+00:00
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Domain-properties-created_at
+        region:
+          description: The region where the domain is hosted.
+          example: us-east-1
+          type: string
+          x-konfig-original-example: us-east-1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Domain-properties-region
+        records:
+          items:
+            $ref: '#/components/schemas/DomainRecord'
+          type: array
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    VerifyDomainResponse:
+      example:
+        id: d91cd9bd-1176-453e-8fc1-35364d380206
+        object: domain
+      properties:
+        object:
+          description: The type of object.
+          example: domain
+          type: string
+          x-konfig-original-example: domain
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-VerifyDomainResponse-properties-object
+        id:
+          description: The ID of the domain.
+          example: d91cd9bd-1176-453e-8fc1-35364d380206
+          type: string
+          x-konfig-original-example: d91cd9bd-1176-453e-8fc1-35364d380206
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-VerifyDomainResponse-properties-id
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ListDomainsResponse:
+      example:
+        data:
+        - name: example.com
+          created_at: 2023-04-26T20:21:26.347412Z
+          id: d91cd9bd-1176-453e-8fc1-35364d380206
+          region: us-east-1
+          status: not_started
+        - name: example.com
+          created_at: 2023-04-26T20:21:26.347412Z
+          id: d91cd9bd-1176-453e-8fc1-35364d380206
+          region: us-east-1
+          status: not_started
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ListDomainsItem'
+          type: array
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ListDomainsItem:
+      example:
+        name: example.com
+        created_at: 2023-04-26T20:21:26.347412Z
+        id: d91cd9bd-1176-453e-8fc1-35364d380206
+        region: us-east-1
+        status: not_started
+      properties:
+        id:
+          description: The ID of the domain.
+          example: d91cd9bd-1176-453e-8fc1-35364d380206
+          type: string
+          x-konfig-original-example: d91cd9bd-1176-453e-8fc1-35364d380206
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListDomainsItem-properties-id
+        name:
+          description: The name of the domain.
+          example: example.com
+          type: string
+          x-konfig-original-example: example.com
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListDomainsItem-properties-name
+        status:
+          description: The status of the domain.
+          example: not_started
+          type: string
+          x-konfig-original-example: not_started
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListDomainsItem-properties-status
+        created_at:
+          description: The date and time the domain was created.
+          example: 2023-04-26T20:21:26.347412Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2023-04-26T20:21:26.347412+00:00
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListDomainsItem-properties-created_at
+        region:
+          description: The region where the domain is hosted.
+          example: us-east-1
+          type: string
+          x-konfig-original-example: us-east-1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListDomainsItem-properties-region
+      type: object
+    UpdateDomainOptions:
+      example:
+        click_tracking: true
+        open_tracking: true
+      properties:
+        click_tracking:
+          description: Enable or disable click tracking for the domain.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateDomainOptions-properties-click_tracking
+        open_tracking:
+          description: Enable or disable open tracking for the domain.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateDomainOptions-properties-open_tracking
+      type: object
+    UpdateDomainResponseSuccess:
+      example:
+        id: d91cd9bd-1176-453e-8fc1-35364d380206
+        object: domain
+      properties:
+        id:
+          description: The ID of the updated domain.
+          example: d91cd9bd-1176-453e-8fc1-35364d380206
+          type: string
+          x-konfig-original-example: d91cd9bd-1176-453e-8fc1-35364d380206
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateDomainResponseSuccess-properties-id
+        object:
+          description: The object type representing the updated domain.
+          example: domain
+          type: string
+          x-konfig-original-example: domain
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateDomainResponseSuccess-properties-object
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    DeleteDomainResponse:
+      example:
+        deleted: true
+        id: d91cd9bd-1176-453e-8fc1-35364d380206
+        object: domain
+      properties:
+        object:
+          description: The type of object.
+          example: domain
+          type: string
+          x-konfig-original-example: domain
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-DeleteDomainResponse-properties-object
+        id:
+          description: The ID of the domain.
+          example: d91cd9bd-1176-453e-8fc1-35364d380206
+          type: string
+          x-konfig-original-example: d91cd9bd-1176-453e-8fc1-35364d380206
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-DeleteDomainResponse-properties-id
+        deleted:
+          description: Indicates whether the domain was deleted successfully.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-DeleteDomainResponse-properties-deleted
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    CreateApiKeyRequest:
+      example:
+        domain_id: domain_id
+        name: name
+        permission: full_access
+      properties:
+        name:
+          description: The API key name.
+          type: string
+        permission:
+          description: "The API key can have full access to Resend’s API or be only\
+            \ restricted to send emails. * full_access - Can create, delete, get,\
+            \ and update any resource. * sending_access - Can only send emails."
+          enum:
+          - full_access
+          - sending_access
+          type: string
+        domain_id:
+          description: Restrict an API key to send emails only from a specific domain.
+            Only used when the permission is sending_acces.
+          type: string
+      required:
+      - name
+      type: object
+    CreateApiKeyResponse:
+      example:
+        id: id
+        token: token
+      properties:
+        id:
+          description: The ID of the API key.
+          type: string
+        token:
+          description: The token of the API key.
+          type: string
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ListApiKeysResponse:
+      example:
+        data:
+        - name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          id: id
+        - name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          id: id
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ApiKey'
+          type: array
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ApiKey:
+      example:
+        name: name
+        created_at: 2000-01-23T04:56:07.000+00:00
+        id: id
+      properties:
+        id:
+          description: The ID of the API key.
+          type: string
+        name:
+          description: The name of the API key.
+          type: string
+        created_at:
+          description: The date and time the API key was created.
+          format: date-time
+          type: string
+      type: object
+    CreateAudienceOptions:
+      example:
+        name: name
+      properties:
+        name:
+          description: The name of the audience you want to create.
+          type: string
+      required:
+      - name
+      type: object
+    CreateAudienceResponseSuccess:
+      example:
+        name: Registered Users
+        id: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+        object: audience
+      properties:
+        id:
+          description: The ID of the audience.
+          example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          type: string
+          x-konfig-original-example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateAudienceResponseSuccess-properties-id
+        object:
+          description: The object of the audience.
+          example: audience
+          type: string
+          x-konfig-original-example: audience
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateAudienceResponseSuccess-properties-object
+        name:
+          description: The name of the audience.
+          example: Registered Users
+          type: string
+          x-konfig-original-example: Registered Users
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateAudienceResponseSuccess-properties-name
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    GetAudienceResponseSuccess:
+      example:
+        name: Registered Users
+        created_at: 2023-10-06T22:59:55.977Z
+        id: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+        object: audience
+      properties:
+        id:
+          description: The ID of the audience.
+          example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          type: string
+          x-konfig-original-example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetAudienceResponseSuccess-properties-id
+        object:
+          description: The object of the audience.
+          example: audience
+          type: string
+          x-konfig-original-example: audience
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetAudienceResponseSuccess-properties-object
+        name:
+          description: The name of the audience.
+          example: Registered Users
+          type: string
+          x-konfig-original-example: Registered Users
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetAudienceResponseSuccess-properties-name
+        created_at:
+          description: The date that the object was created.
+          example: 2023-10-06T22:59:55.977Z
+          type: string
+          x-konfig-original-example: 2023-10-06T22:59:55.977Z
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetAudienceResponseSuccess-properties-created_at
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    RemoveAudienceResponseSuccess:
+      example:
+        deleted: true
+        id: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+        object: audience
+      properties:
+        id:
+          description: The ID of the audience.
+          example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          type: string
+          x-konfig-original-example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RemoveAudienceResponseSuccess-properties-id
+        object:
+          description: The object of the audience.
+          example: audience
+          type: string
+          x-konfig-original-example: audience
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RemoveAudienceResponseSuccess-properties-object
+        deleted:
+          description: The deleted attribute indicates that the corresponding audience
+            has been deleted.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RemoveAudienceResponseSuccess-properties-deleted
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ListAudiencesResponseSuccess:
+      example:
+        data:
+        - name: Registered Users
+          created_at: 2023-10-06T22:59:55.977Z
+          id: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+        - name: Registered Users
+          created_at: 2023-10-06T22:59:55.977Z
+          id: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+        object: list
+      properties:
+        object:
+          description: Type of the response object.
+          example: list
+          type: string
+          x-konfig-original-example: list
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListAudiencesResponseSuccess-properties-object
+        data:
+          description: Array containing audience information.
+          items:
+            $ref: '#/components/schemas/ListAudiencesResponseSuccess_data_inner'
+          type: array
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    CreateContactOptions:
+      example:
+        unsubscribed: false
+        last_name: Wozniak
+        audience_id: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+        first_name: Steve
+        email: steve.wozniak@gmail.com
+      properties:
+        email:
+          description: Email address of the contact.
+          example: steve.wozniak@gmail.com
+          type: string
+          x-konfig-original-example: steve.wozniak@gmail.com
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateContactOptions-properties-email
+        first_name:
+          description: First name of the contact.
+          example: Steve
+          type: string
+          x-konfig-original-example: Steve
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateContactOptions-properties-first_name
+        last_name:
+          description: Last name of the contact.
+          example: Wozniak
+          type: string
+          x-konfig-original-example: Wozniak
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateContactOptions-properties-last_name
+        unsubscribed:
+          description: Indicates if the contact is unsubscribed.
+          example: false
+          type: boolean
+          x-konfig-original-example: false
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateContactOptions-properties-unsubscribed
+        audience_id:
+          description: Unique identifier of the audience to which the contact belongs.
+          example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          type: string
+          x-konfig-original-example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateContactOptions-properties-audience_id
+      required:
+      - email
+      type: object
+    CreateContactResponseSuccess:
+      example:
+        id: 479e3145-dd38-476b-932c-529ceb705947
+        object: contact
+      properties:
+        object:
+          description: Type of the response object.
+          example: contact
+          type: string
+          x-konfig-original-example: contact
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateContactResponseSuccess-properties-object
+        id:
+          description: Unique identifier for the created contact.
+          example: 479e3145-dd38-476b-932c-529ceb705947
+          type: string
+          x-konfig-original-example: 479e3145-dd38-476b-932c-529ceb705947
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateContactResponseSuccess-properties-id
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    GetContactResponseSuccess:
+      example:
+        unsubscribed: false
+        last_name: Wozniak
+        created_at: 2023-10-06T23:47:56.678Z
+        id: e169aa45-1ecf-4183-9955-b1499d5701d3
+        first_name: Steve
+        email: steve.wozniak@gmail.com
+        object: contact
+      properties:
+        object:
+          description: Type of the response object.
+          example: contact
+          type: string
+          x-konfig-original-example: contact
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-object
+        id:
+          description: Unique identifier for the contact.
+          example: e169aa45-1ecf-4183-9955-b1499d5701d3
+          type: string
+          x-konfig-original-example: e169aa45-1ecf-4183-9955-b1499d5701d3
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-id
+        email:
+          description: Email address of the contact.
+          example: steve.wozniak@gmail.com
+          type: string
+          x-konfig-original-example: steve.wozniak@gmail.com
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-email
+        first_name:
+          description: First name of the contact.
+          example: Steve
+          type: string
+          x-konfig-original-example: Steve
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-first_name
+        last_name:
+          description: Last name of the contact.
+          example: Wozniak
+          type: string
+          x-konfig-original-example: Wozniak
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-last_name
+        created_at:
+          description: Timestamp indicating when the contact was created.
+          example: 2023-10-06T23:47:56.678Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2023-10-06T23:47:56.678Z
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-created_at
+        unsubscribed:
+          description: Indicates if the contact is unsubscribed.
+          example: false
+          type: boolean
+          x-konfig-original-example: false
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-unsubscribed
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    UpdateContactOptions:
+      example:
+        unsubscribed: false
+        last_name: Wozniak
+        first_name: Steve
+        email: steve.wozniak@gmail.com
+      properties:
+        email:
+          description: Email address of the contact.
+          example: steve.wozniak@gmail.com
+          type: string
+          x-konfig-original-example: steve.wozniak@gmail.com
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactOptions-properties-email
+        first_name:
+          description: First name of the contact.
+          example: Steve
+          type: string
+          x-konfig-original-example: Steve
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactOptions-properties-first_name
+        last_name:
+          description: Last name of the contact.
+          example: Wozniak
+          type: string
+          x-konfig-original-example: Wozniak
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactOptions-properties-last_name
+        unsubscribed:
+          description: Indicates the subscription status of the contact.
+          example: false
+          type: boolean
+          x-konfig-original-example: false
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactOptions-properties-unsubscribed
+      type: object
+    UpdateContactResponseSuccess:
+      example:
+        id: 479e3145-dd38-476b-932c-529ceb705947
+        object: contact
+      properties:
+        object:
+          description: Type of the response object.
+          example: contact
+          type: string
+          x-konfig-original-example: contact
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactResponseSuccess-properties-object
+        id:
+          description: Unique identifier for the updated contact.
+          example: 479e3145-dd38-476b-932c-529ceb705947
+          type: string
+          x-konfig-original-example: 479e3145-dd38-476b-932c-529ceb705947
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactResponseSuccess-properties-id
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    RemoveContactResponseSuccess:
+      example:
+        deleted: true
+        id: 520784e2-887d-4c25-b53c-4ad46ad38100
+        object: contact
+      properties:
+        object:
+          description: Type of the response object.
+          example: contact
+          type: string
+          x-konfig-original-example: contact
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RemoveContactResponseSuccess-properties-object
+        id:
+          description: Unique identifier for the removed contact.
+          example: 520784e2-887d-4c25-b53c-4ad46ad38100
+          type: string
+          x-konfig-original-example: 520784e2-887d-4c25-b53c-4ad46ad38100
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RemoveContactResponseSuccess-properties-id
+        deleted:
+          description: Indicates whether the contact was successfully deleted.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RemoveContactResponseSuccess-properties-deleted
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ListContactsResponseSuccess:
+      example:
+        data:
+        - unsubscribed: false
+          last_name: Wozniak
+          created_at: 2023-10-06T23:47:56.678Z
+          id: e169aa45-1ecf-4183-9955-b1499d5701d3
+          first_name: Steve
+          email: steve.wozniak@gmail.com
+        - unsubscribed: false
+          last_name: Wozniak
+          created_at: 2023-10-06T23:47:56.678Z
+          id: e169aa45-1ecf-4183-9955-b1499d5701d3
+          first_name: Steve
+          email: steve.wozniak@gmail.com
+        object: list
+      properties:
+        object:
+          description: Type of the response object.
+          example: list
+          type: string
+          x-konfig-original-example: list
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-object
+        data:
+          description: Array containing contact information.
+          items:
+            $ref: '#/components/schemas/ListContactsResponseSuccess_data_inner'
+          type: array
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    EmailsTriggerBatchEmailsRequest:
+      items:
+        $ref: '#/components/schemas/SendEmailRequest'
+      type: array
+    konfig-generated-schema-components-schemas-Email-properties-object:
+      example: email
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Email-properties-id:
+      example: 4ef9a417-02e9-4d39-ad75-9611e0fcc33c
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Email-properties-to:
+      example:
+      - delivered@resend.dev
+      items:
+        example: delivered@resend.dev
+        type: string
+      type: array
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Email-properties-from:
+      example: Acme <onboarding@resend.dev>
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Email-properties-created_at:
+      example: 2023-04-03T22:13:42.674981+00:00
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Email-properties-subject:
+      example: Hello World
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Email-properties-html:
+      example: Congrats on sending your <strong>first email</strong>!
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Email-properties-last_event:
+      example: delivered
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateDomainRequest-properties-region:
+      example: us-east-1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Domain-properties-object:
+      example: domain
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Domain-properties-id:
+      example: d91cd9bd-1176-453e-8fc1-35364d380206
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Domain-properties-name:
+      example: example.com
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Domain-properties-status:
+      example: not_started
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Domain-properties-created_at:
+      example: 2023-04-26T20:21:26.347412+00:00
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Domain-properties-region:
+      example: us-east-1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-VerifyDomainResponse-properties-object:
+      example: domain
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-VerifyDomainResponse-properties-id:
+      example: d91cd9bd-1176-453e-8fc1-35364d380206
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListDomainsItem-properties-id:
+      example: d91cd9bd-1176-453e-8fc1-35364d380206
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListDomainsItem-properties-name:
+      example: example.com
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListDomainsItem-properties-status:
+      example: not_started
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListDomainsItem-properties-created_at:
+      example: 2023-04-26T20:21:26.347412+00:00
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListDomainsItem-properties-region:
+      example: us-east-1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateDomainOptions-properties-click_tracking:
+      example: true
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateDomainOptions-properties-open_tracking:
+      example: true
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateDomainResponseSuccess-properties-id:
+      example: d91cd9bd-1176-453e-8fc1-35364d380206
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateDomainResponseSuccess-properties-object:
+      example: domain
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-DeleteDomainResponse-properties-object:
+      example: domain
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-DeleteDomainResponse-properties-id:
+      example: d91cd9bd-1176-453e-8fc1-35364d380206
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-DeleteDomainResponse-properties-deleted:
+      example: true
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateAudienceResponseSuccess-properties-id:
+      example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateAudienceResponseSuccess-properties-object:
+      example: audience
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateAudienceResponseSuccess-properties-name:
+      example: Registered Users
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetAudienceResponseSuccess-properties-id:
+      example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetAudienceResponseSuccess-properties-object:
+      example: audience
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetAudienceResponseSuccess-properties-name:
+      example: Registered Users
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetAudienceResponseSuccess-properties-created_at:
+      example: 2023-10-06T22:59:55.977Z
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RemoveAudienceResponseSuccess-properties-id:
+      example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RemoveAudienceResponseSuccess-properties-object:
+      example: audience
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RemoveAudienceResponseSuccess-properties-deleted:
+      example: true
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListAudiencesResponseSuccess-properties-object:
+      example: list
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListAudiencesResponseSuccess-properties-data-items-properties-id:
+      example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListAudiencesResponseSuccess-properties-data-items-properties-name:
+      example: Registered Users
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListAudiencesResponseSuccess-properties-data-items-properties-created_at:
+      example: 2023-10-06T22:59:55.977Z
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateContactOptions-properties-email:
+      example: steve.wozniak@gmail.com
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateContactOptions-properties-first_name:
+      example: Steve
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateContactOptions-properties-last_name:
+      example: Wozniak
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateContactOptions-properties-unsubscribed:
+      example: false
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateContactOptions-properties-audience_id:
+      example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateContactResponseSuccess-properties-object:
+      example: contact
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CreateContactResponseSuccess-properties-id:
+      example: 479e3145-dd38-476b-932c-529ceb705947
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-object:
+      example: contact
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-id:
+      example: e169aa45-1ecf-4183-9955-b1499d5701d3
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-email:
+      example: steve.wozniak@gmail.com
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-first_name:
+      example: Steve
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-last_name:
+      example: Wozniak
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-created_at:
+      example: 2023-10-06T23:47:56.678Z
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-GetContactResponseSuccess-properties-unsubscribed:
+      example: false
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateContactOptions-properties-email:
+      example: steve.wozniak@gmail.com
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateContactOptions-properties-first_name:
+      example: Steve
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateContactOptions-properties-last_name:
+      example: Wozniak
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateContactOptions-properties-unsubscribed:
+      example: false
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateContactResponseSuccess-properties-object:
+      example: contact
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UpdateContactResponseSuccess-properties-id:
+      example: 479e3145-dd38-476b-932c-529ceb705947
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RemoveContactResponseSuccess-properties-object:
+      example: contact
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RemoveContactResponseSuccess-properties-id:
+      example: 520784e2-887d-4c25-b53c-4ad46ad38100
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RemoveContactResponseSuccess-properties-deleted:
+      example: true
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-object:
+      example: list
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-id:
+      example: e169aa45-1ecf-4183-9955-b1499d5701d3
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-email:
+      example: steve.wozniak@gmail.com
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-first_name:
+      example: Steve
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-last_name:
+      example: Wozniak
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-created_at:
+      example: 2023-10-06T23:47:56.678Z
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-unsubscribed:
+      example: false
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-single-parameter-schema-post--emails:
+      properties:
+        tags:
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        from:
+          description: "Sender email address. To include a friendly name, use the\
+            \ format \"Your Name <sender@domain.com>\"."
+          type: string
+        to:
+          items:
+            description: "Recipient email address. For multiple addresses, send as\
+              \ an array of strings. Max 50."
+            type: string
+          type: array
+        subject:
+          description: Email subject.
+          type: string
+        bcc:
+          description: "Bcc recipient email address. For multiple addresses, send\
+            \ as an array of strings."
+          type: string
+        cc:
+          description: "Cc recipient email address. For multiple addresses, send as\
+            \ an array of strings."
+          type: string
+        reply_to:
+          description: "Reply-to email address. For multiple addresses, send as an\
+            \ array of strings."
+          type: string
+        html:
+          description: The HTML version of the message.
+          type: string
+        text:
+          description: The plain text version of the message.
+          type: string
+        headers:
+          description: Custom headers to add to the email.
+          type: object
+        attachments:
+          items:
+            $ref: '#/components/schemas/Attachment'
+          type: array
+      required:
+      - from
+      - subject
+      - to
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--emails-email_id:
+      properties:
+        email_id:
+          description: The ID of the email.
+          type: string
+      required:
+      - email_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - email_id
+    konfig-generated-schema-single-parameter-schema-post--emails-batch:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--domains:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-post--domains:
+      properties:
+        name:
+          description: The name of the domain you want to create.
+          type: string
+        region:
+          default: us-east-1
+          description: The region where emails will be sent from. Possible values
+            are us-east-1' | 'eu-west-1' | 'sa-east-1
+          enum:
+          - us-east-1
+          - eu-west-1
+          - sa-east-1
+          example: us-east-1
+          type: string
+          x-konfig-original-example: us-east-1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CreateDomainRequest-properties-region
+      required:
+      - name
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-delete--domains-domain_id:
+      properties:
+        domain_id:
+          description: The ID of the domain.
+          type: string
+      required:
+      - domain_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - domain_id
+    konfig-generated-schema-single-parameter-schema-get--domains-domain_id:
+      properties:
+        domain_id:
+          description: The ID of the domain.
+          type: string
+      required:
+      - domain_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - domain_id
+    konfig-generated-schema-single-parameter-schema-patch--domains-domain_id:
+      properties:
+        domain_id:
+          description: The ID of the domain.
+          type: string
+        click_tracking:
+          description: Enable or disable click tracking for the domain.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateDomainOptions-properties-click_tracking
+        open_tracking:
+          description: Enable or disable open tracking for the domain.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateDomainOptions-properties-open_tracking
+      required:
+      - domain_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - domain_id
+    konfig-generated-schema-single-parameter-schema-post--domains-domain_id-verify:
+      properties:
+        domain_id:
+          description: The ID of the domain.
+          type: string
+      required:
+      - domain_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - domain_id
+    konfig-generated-schema-single-parameter-schema-get--api-keys:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-post--api-keys:
+      properties:
+        name:
+          description: The API key name.
+          type: string
+        permission:
+          description: "The API key can have full access to Resend’s API or be only\
+            \ restricted to send emails. * full_access - Can create, delete, get,\
+            \ and update any resource. * sending_access - Can only send emails."
+          enum:
+          - full_access
+          - sending_access
+          type: string
+        domain_id:
+          description: Restrict an API key to send emails only from a specific domain.
+            Only used when the permission is sending_acces.
+          type: string
+      required:
+      - name
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-delete--api-keys-api_key_id:
+      properties:
+        api_key_id:
+          description: The API key ID.
+          type: string
+      required:
+      - api_key_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - api_key_id
+    konfig-generated-schema-single-parameter-schema-get--audiences:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-post--audiences:
+      properties:
+        name:
+          description: The name of the audience you want to create.
+          type: string
+      required:
+      - name
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-delete--audiences-id:
+      properties:
+        id:
+          description: The Audience ID.
+          type: string
+      required:
+      - id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - id
+    konfig-generated-schema-single-parameter-schema-get--audiences-id:
+      properties:
+        id:
+          description: The Audience ID.
+          type: string
+      required:
+      - id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - id
+    konfig-generated-schema-single-parameter-schema-get--audiences-audience_id-contacts:
+      properties:
+        audience_id:
+          description: The Audience ID.
+          type: string
+      required:
+      - audience_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - audience_id
+    konfig-generated-schema-single-parameter-schema-delete--audiences-audience_id-contacts-email:
+      properties:
+        email:
+          description: The Contact ID.
+          type: string
+        audience_id:
+          description: The Audience ID.
+          type: string
+      required:
+      - audience_id
+      - email
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - email
+      - audience_id
+    konfig-generated-schema-single-parameter-schema-delete--audiences-audience_id-contacts-id:
+      properties:
+        id:
+          description: The Contact ID.
+          type: string
+        audience_id:
+          description: The Audience ID.
+          type: string
+      required:
+      - audience_id
+      - id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - id
+      - audience_id
+    konfig-generated-schema-single-parameter-schema-get--audiences-audience_id-contacts-id:
+      properties:
+        id:
+          description: The Contact ID.
+          type: string
+        audience_id:
+          description: The Audience ID.
+          type: string
+      required:
+      - audience_id
+      - id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - id
+      - audience_id
+    konfig-generated-schema-single-parameter-schema-patch--audiences-audience_id-contacts-id:
+      properties:
+        id:
+          description: The Contact ID.
+          type: string
+        audience_id:
+          description: The Audience ID.
+          type: string
+        email:
+          description: Email address of the contact.
+          example: steve.wozniak@gmail.com
+          type: string
+          x-konfig-original-example: steve.wozniak@gmail.com
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactOptions-properties-email
+        first_name:
+          description: First name of the contact.
+          example: Steve
+          type: string
+          x-konfig-original-example: Steve
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactOptions-properties-first_name
+        last_name:
+          description: Last name of the contact.
+          example: Wozniak
+          type: string
+          x-konfig-original-example: Wozniak
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactOptions-properties-last_name
+        unsubscribed:
+          description: Indicates the subscription status of the contact.
+          example: false
+          type: boolean
+          x-konfig-original-example: false
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UpdateContactOptions-properties-unsubscribed
+      required:
+      - audience_id
+      - id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - id
+      - audience_id
+    CreateBatchEmailsResponse_data_inner:
+      example:
+        id: id
+      properties:
+        id:
+          description: The ID of the sent email.
+          type: string
+      type: object
+    ListAudiencesResponseSuccess_data_inner:
+      example:
+        name: Registered Users
+        created_at: 2023-10-06T22:59:55.977Z
+        id: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+      properties:
+        id:
+          description: Unique identifier for the audience.
+          example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          type: string
+          x-konfig-original-example: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListAudiencesResponseSuccess-properties-data-items-properties-id
+        name:
+          description: Name of the audience.
+          example: Registered Users
+          type: string
+          x-konfig-original-example: Registered Users
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListAudiencesResponseSuccess-properties-data-items-properties-name
+        created_at:
+          description: Timestamp indicating when the audience was created.
+          example: 2023-10-06T22:59:55.977Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2023-10-06T22:59:55.977Z
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListAudiencesResponseSuccess-properties-data-items-properties-created_at
+      type: object
+    ListContactsResponseSuccess_data_inner:
+      example:
+        unsubscribed: false
+        last_name: Wozniak
+        created_at: 2023-10-06T23:47:56.678Z
+        id: e169aa45-1ecf-4183-9955-b1499d5701d3
+        first_name: Steve
+        email: steve.wozniak@gmail.com
+      properties:
+        id:
+          description: Unique identifier for the contact.
+          example: e169aa45-1ecf-4183-9955-b1499d5701d3
+          type: string
+          x-konfig-original-example: e169aa45-1ecf-4183-9955-b1499d5701d3
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-id
+        email:
+          description: Email address of the contact.
+          example: steve.wozniak@gmail.com
+          type: string
+          x-konfig-original-example: steve.wozniak@gmail.com
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-email
+        first_name:
+          description: First name of the contact.
+          example: Steve
+          type: string
+          x-konfig-original-example: Steve
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-first_name
+        last_name:
+          description: Last name of the contact.
+          example: Wozniak
+          type: string
+          x-konfig-original-example: Wozniak
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-last_name
+        created_at:
+          description: Timestamp indicating when the contact was created.
+          example: 2023-10-06T23:47:56.678Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2023-10-06T23:47:56.678Z
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-created_at
+        unsubscribed:
+          description: Indicates if the contact is unsubscribed.
+          example: false
+          type: boolean
+          x-konfig-original-example: false
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-ListContactsResponseSuccess-properties-data-items-properties-unsubscribed
+      type: object
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+      x-konfig-globally-required-security: true
+
